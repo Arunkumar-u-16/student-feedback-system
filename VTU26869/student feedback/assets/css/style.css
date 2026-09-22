@@ -1,0 +1,644 @@
+/* 
+    Student Feedback System - Modern Mobile-First UI 
+    A native mobile app inspired design (Android/iOS style)
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Primary Colors */
+    --primary-color: #4361ee;
+    --primary-light: rgba(67, 97, 238, 0.1);
+    --primary-dark: #3a0ca3;
+    --secondary-color: #4cc9f0;
+    
+    /* Backgrounds & Text */
+    --bg-color: #f8f9fc;
+    --card-bg: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+    
+    /* Semantic Colors */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    
+    /* Surfaces */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 20px;
+    --border-radius-xl: 30px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    
+    /* Measurements */
+    --header-height: 60px;
+    --bottom-nav-height: 70px;
+    --max-content-width: 480px;
+
+    /* Animations */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar for modern look */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    --primary-light: rgba(67, 97, 238, 0.2);
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+}
+
+/* 1. Core Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
+    transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+/* 2. Layout Structure */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    padding-bottom: calc(var(--bottom-nav-height) + 40px); /* Leave space for bottom nav */
+    padding-top: calc(var(--header-height) + 20px); /* Leave space for sticky header */
+    transition: all var(--transition-base);
+}
+
+/* 3. Header & Navigation */
+.top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(67, 97, 238, 0.08); /* Modern subtle shadow */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .top-navbar {
+    background: rgba(15, 23, 42, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-avatar-sm {
+    width: 32px;
+    height: 32px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+@media (min-width: 992px) {
+    .top-navbar {
+        left: 280px; /* Shift navbar to the right of sidebar on desktop */
+        width: calc(100% - 280px); /* Explicit width */
+        right: 0;
+    }
+}
+
+.top-navbar h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--primary-color);
+}
+
+/* Bottom Navigation (Mobile Native Feel) */
+.navbar-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--bottom-nav-height);
+    background: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 10px;
+    padding-bottom: env(safe-area-inset-bottom); /* iOS support */
+    z-index: 1001;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .navbar-bottom {
+    background: rgba(30, 41, 59, 0.85);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-item-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: 65px;
+    height: 100%;
+    transition: var(--transition-fast);
+    position: relative;
+    padding-top: 5px;
+}
+
+.nav-item-bottom i {
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.nav-item-bottom.active {
+    color: var(--primary-color);
+}
+
+.nav-item-bottom.active::after {
+    content: '';
+    position: absolute;
+    bottom: 12px;
+    width: 4px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 50%;
+}
+
+/* 4. Login Screen */
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: linear-gradient(135deg, var(--bg-color) 0%, #e0e7ff 100%);
+}
+
+.login-card {
+    background: var(--card-bg);
+    padding: 40px 32px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.login-card h2 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* 5. Components: Cards */
+.card {
+    background: var(--card-bg);
+    border: none;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card.bg-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%) !important;
+    border: none;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* 6. Form Controls & Inputs */
+.form-label {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    padding-left: 4px;
+}
+
+.form-control, .form-select {
+    border-radius: var(--border-radius-md);
+    padding: 12px 16px;
+    border: 2px solid transparent;
+    background-color: var(--bg-color);
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    transition: var(--transition-fast);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--card-bg);
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px var(--primary-light);
+    outline: none;
+}
+
+.input-group-text {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: var(--border-radius-md) 0 0 var(--border-radius-md);
+    color: var(--text-secondary);
+    padding-left: 16px;
+}
+
+.form-control:has(+ .input-group-text), 
+.input-group > .form-control:not(:first-child) {
+    border-left: none;
+}
+
+/* 7. Buttons */
+.btn {
+    padding: 12px 24px;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(67, 97, 238, 0.3);
+}
+
+.btn-primary:hover, .btn-primary:active {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background: transparent;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-light {
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    color: white;
+}
+
+/* 8. Feedback Form Stars & Rating */
+.rating-group {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 10px;
+}
+
+.rating-star {
+    font-size: 2rem;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+
+.rating-star:hover,
+.rating-star:hover ~ .rating-star,
+.rating-star.selected,
+.rating-star.selected ~ .rating-star {
+    color: var(--warning);
+}
+
+/* 9. Feedback Items / Admin Tables */
+.feedback-list-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background: var(--card-bg);
+    border-radius: var(--border-radius-md);
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+.table {
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    background: transparent;
+}
+
+.table tr {
+    background: var(--card-bg);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--border-radius-md);
+}
+
+.table td, .table th {
+    padding: 16px;
+    vertical-align: middle;
+    border: none;
+}
+
+.table tr td:first-child { border-radius: 12px 0 0 12px; }
+.table tr td:last-child { border-radius: 0 12px 12px 0; }
+
+/* 10. Badges & Indicators */
+.badge {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+}
+
+.bg-primary { background-color: var(--primary-light) !important; color: var(--primary-color) !important; }
+.bg-success { background-color: rgba(16, 185, 129, 0.1) !important; color: var(--success) !important; }
+.bg-warning { background-color: rgba(245, 158, 11, 0.1) !important; color: var(--warning) !important; }
+.bg-danger { background-color: rgba(239, 68, 64, 0.1) !important; color: var(--danger) !important; }
+
+/* 11. Loading Animations */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--primary-light);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 12. Alert Styles */
+.alert {
+    border-radius: var(--border-radius-md);
+    border: none;
+    box-shadow: var(--shadow-sm);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 12a. Dashboard Component Styles */
+.stat-card {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-card h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 15px 0 5px;
+}
+
+.stat-card .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.link-muted { color: var(--text-muted); }
+.link-muted:hover { color: var(--text-primary); }
+
+.link-dark { color: var(--text-primary); }
+.link-dark:hover { color: var(--primary-color); }
+
+/* 12b. Mobile Specific Menu Styles */
+.mobile-sidebar-content #sidebar {
+    width: 100%;
+    border-right: none;
+    height: auto;
+    position: static;
+}
+
+.mobile-sidebar-content .sidebar-header {
+    display: none; /* Hide internal sidebar header in mobile offcanvas */
+}
+
+.offcanvas-body {
+    padding-bottom: var(--bottom-nav-height); /* Ensure no overlap with bottom nav */
+}
+
+/* 13. Responsive Sidebar (Desktop Only) */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--card-bg);
+    border-right: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all var(--transition-base);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+}
+
+.sidebar-header {
+    padding: 20px 25px;
+    background: var(--primary-color);
+    color: white;
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+#sidebar ul.components {
+    padding: 15px 0;
+}
+
+#sidebar ul li a {
+    padding: 12px 25px;
+    display: block;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: all 0.2s;
+    border-left: 4px solid transparent;
+}
+
+#sidebar ul li a:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+#sidebar ul li.active > a {
+    color: var(--primary-color);
+    background: var(--primary-light);
+    border-left-color: var(--primary-color);
+}
+
+#sidebar ul li a i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    #sidebar {
+        display: none; /* Hide standard sidebar on mobile/tablets */
+    }
+    
+    #content {
+        width: 100%;
+    }
+}
+
+/* Desktop Bottom Nav Hide */
+@media (min-width: 992px) {
+    .navbar-bottom {
+        display: none;
+    }
+    
+    #content {
+        padding-bottom: 40px;
+    }
+}
+
+/* 14. Mobile Optimized Spacing */
+@media (max-width: 480px) {
+    .container, .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    #content {
+        padding: 16px;
+        padding-top: calc(var(--header-height) + 16px);
+        padding-bottom: calc(var(--bottom-nav-height) + 32px);
+    }
+}
+
+/* 15. Form Validation States */
+.was-validated .form-control:invalid {
+    border-color: var(--danger);
+    background-image: none;
+}
+
+.was-validated .form-control:valid {
+    border-color: var(--success);
+    background-image: none;
+}
+
+/* 16. Touch Friendly Interactions */
+button, .nav-item-bottom, .card, .btn {
+    cursor: pointer;
+    touch-action: manipulation;
+}
